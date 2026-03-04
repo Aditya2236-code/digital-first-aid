@@ -1,54 +1,192 @@
-# Digital First Aid API
+# 🚑 Digital First Aid
 
-A FastAPI-based backend system that analyzes basic health indicators 
-and provides first-level medical risk assessment.
+An **AI-powered emergency first aid guidance system** that analyzes basic health indicators and provides immediate first-aid recommendations during potential medical emergencies.
 
-## 🚀 Tech Stack
-- Python
-- FastAPI
-- Uvicorn
-- Pydantic
+This project helps users quickly evaluate risk levels based on symptoms and vital signs, offering guidance before professional medical help arrives.
 
-## 📁 Project Structure
-digital-first-aid/
-│
-├── backend/
-│   ├── app.py
-│   └── requirements.txt
-│
-└── .gitignore
+---
 
-## ⚙️ How to Run Locally
+# 🌐 Live Demo
 
-1. Clone repository
-2. Navigate to backend folder
-3. Install dependencies
+Frontend deployed on Netlify:
 
-pip install -r requirements.txt
+https://digital-first-aid.netlify.app
 
-4. Run server
+⚠️ Note:
+The deployed frontend UI works online, but the backend API must be run locally for full functionality.
 
-python -m uvicorn app:app --reload
+---
 
-Server runs on:
-http://127.0.0.1:8000
+# 🧠 Project Idea
 
-## 📌 API Endpoints
+In emergency situations, people often panic and do not know what steps to take immediately.
+
+Digital First Aid provides:
+
+• Instant risk assessment
+• AI-generated first aid instructions
+• Symptom-based analysis
+• Quick decision support before medical help arrives
+
+The goal is to **assist users in taking the right first aid actions quickly.**
+
+---
+
+# 🏗 System Architecture
+
+Frontend (HTML + JavaScript)
+⬇
+FastAPI Backend (Python)
+⬇
+Risk Evaluation Logic
+⬇
+AI First Aid Guidance Generator
+
+The frontend collects health data and sends it to the backend API, which evaluates the risk and generates first aid instructions.
+
+---
+
+# ⚙ Tech Stack
+
+**Backend**
+
+* Python
+* FastAPI
+* Uvicorn
+* Pydantic
+
+**Frontend**
+
+* HTML
+* CSS
+* JavaScript
+
+**Deployment**
+
+* Netlify (Frontend)
+
+---
+
+# 📡 API Endpoints
+
+### Health Check
 
 GET /
-→ Health check message
+
+Returns a message confirming the API is running.
+
+---
+
+### Analyze Health Data
 
 POST /analyze
-→ Accepts:
+
+Accepts the following input:
+
+```
 {
   "heart_rate": int,
   "oxygen_level": int,
   "chest_pain": bool,
   "breathing_difficulty": bool
 }
+```
 
-## 📈 Future Improvements
-- Add database integration
-- Add frontend dashboard
-- Deploy on cloud
-- Add AI-based prediction logic
+Returns:
+
+* Risk score
+* Risk level
+* Recommendation
+* First aid steps
+
+---
+
+# 🚀 Running the Project Locally
+
+## 1️⃣ Clone Repository
+
+```
+git clone https://github.com/Aditya2236-code/digital-first-aid.git
+cd digital-first-aid
+```
+
+---
+
+## 2️⃣ Install Backend Dependencies
+
+```
+cd backend
+pip install -r requirements.txt
+```
+
+---
+
+## 3️⃣ Start FastAPI Server
+
+```
+python -m uvicorn app:app --reload
+```
+
+Backend runs at:
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+## 4️⃣ Run Frontend
+
+Open:
+
+```
+frontend/index.html
+```
+
+in your browser.
+
+---
+
+# 🧪 Example Usage
+
+Input:
+
+* Heart Rate: 130
+* Oxygen Level: 88
+* Chest Pain: True
+* Breathing Difficulty: True
+
+Output:
+
+* Risk Level: High / Critical
+* Recommendation: Seek urgent medical attention
+* First Aid Steps: Immediate emergency instructions
+
+---
+
+# 🔮 Future Improvements
+
+• Cloud deployment of backend API
+• Database integration for medical history
+• More advanced AI prediction models
+• Mobile app version
+• Integration with wearable devices
+• Real-time emergency alerts
+
+---
+
+# ⚠ Disclaimer
+
+This project is intended **for educational and hackathon purposes only**.
+
+It does **not replace professional medical advice**.
+Always seek medical professionals in real emergencies.
+
+---
+
+# 👨‍💻 Author
+
+Aditya
+
+GitHub:
+https://github.com/Aditya2236-code
