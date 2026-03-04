@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Digital First Aid</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #0f172a;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        color: white;
+      }
+
+      .card {
+        background: #1e293b;
+        padding: 30px;
+        border-radius: 10px;
+        width: 350px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 5px;
+      }
+
+      .desc {
+        text-align: center;
+        font-size: 14px;
+        opacity: 0.7;
+        margin-bottom: 20px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        border: none;
+      }
+
+      label {
+        font-size: 14px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background: #3b82f6;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background: #2563eb;
+      }
+
+      .result {
+        margin-top: 15px;
+        padding: 12px;
+        background: #0b1220;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+
+      .alert {
+        background: #ef4444;
+        color: white;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <h2>Digital First Aid</h2>
+      <p class="desc">AI powered emergency first aid guidance</p>
+
+      <input id="heart_rate" type="number" placeholder="Heart Rate" />
+
+      <input id="oxygen_level" type="number" placeholder="Oxygen Level" />
+
+      <label>
+        <input type="checkbox" id="chest_pain" />
+        Chest Pain
+      </label>
+
+      <br />
+
+      <label>
+        <input type="checkbox" id="breathing_difficulty" />
+        Breathing Difficulty
+      </label>
+
+      <button onclick="analyze()">Analyze</button>
+
+      <div id="result" class="result"></div>
+    </div>
+
+    <script>
+      async function analyze() {
+        const resultBox = document.getElementById("result");
+
+        resultBox.innerHTML = "Analyzing...";
+
+        const data = {
+          heart_rate: parseInt(document.getElementById("heart_rate").value),
+
+          oxygen_level: parseInt(document.getElementById("oxygen_level").value),
+
+          chest_pain: document.getElementById("chest_pain").checked,
+
+          breathing_difficulty: document.getElementById("breathing_difficulty")
+            .checked,
+        };
+
+        try {
+          const response = await fetch("http://127.0.0.1:8000/analyze", {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+
+          let color = "#22c55e";
+
+          if (result.risk_level === "Critical") {
+            color = "#ef4444";
+          } else if (result.risk_level === "High") {
+            color = "#f97316";
+          } else if (result.risk_level === "Moderate") {
+            color = "#eab308";
+          }
+
+          let stepsHTML = "<ul>";
+
+          result.first_aid_steps.forEach((step) => {
+            stepsHTML += `<li>${step}</li>`;
+          });
+
+          stepsHTML += "</ul>";
+
+          let alertBox = "";
+
+          if (result.risk_level === "Critical") {
+            alertBox = `<div class="alert">🚨 EMERGENCY ALERT — CALL AMBULANCE</div>`;
+          }
+
+          resultBox.innerHTML = `
+
+${alertBox}
+
+<h3 style="color:${color}">Risk Level: ${result.risk_level}</h3>
+
+<p><b>Score:</b> ${result.risk_score}</p>
+
+<p><b>Recommendation:</b> ${result.recommendation}</p>
+
+<h4>First Aid Steps</h4>
+
+${stepsHTML}
+
+`;
+        } catch (error) {
+          resultBox.innerHTML = "Error connecting to backend.";
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,40 +1,25 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
-
+from fastapi.middleware.cors import CORSMiddleware
+from models import HealthInput, HealthResponse
+from services import calculate_risk
+from guidance import generate_first_aid
 app = FastAPI()
-
-# Request model
-class HealthInput(BaseModel):
-    heart_rate: int
-    oxygen_level: int
-    chest_pain: bool
-    breathing_difficulty: bool
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # allow all origins (for development)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def home():
     return {"message": "Digital First Aid API is running"}
 
 
-@app.post("/analyze")
+@app.post("/analyze", response_model=HealthResponse)
 def analyze_health(data: HealthInput):
 
-    risk = "LOW"
-    emergency = False
-    advice = "You seem stable. Monitor your condition."
+    result = calculate_risk(data)
 
-    # Simple risk logic for demo
-    if data.heart_rate > 120 or data.oxygen_level < 90:
-        risk = "CRITICAL"
-        emergency = True
-        advice = "Call emergency services immediately."
-
-    elif data.chest_pain or data.breathing_difficulty:
-        risk = "HIGH"
-        advice = "Seek medical attention as soon as possible."
-
-    return {
-        "risk_level": risk,
-        "advice": advice,
-        "emergency": emergency
-    }
+    return result
